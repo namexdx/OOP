@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Users</title>
+    <link rel="shortcut icon" href="img/img1.png" type="crimea">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        
+        main {
+            margin: 20px;
+        }
+        table {
+            font-weight: bold;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #6600B6;
+            color: #fff;
+            font-weight: bold;
+        }
+        tbody tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #6600B6;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            /* position: fixed; */
+            bottom: 0;
+            width: 100%;
+        }
+
+
+        button{
+            background-color: #6600B6;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            
+        }
+  
+
+
+    </style>
+</head>
+<body class="body_catalog">
+
+    <header class="header_catalog"> 
+        <div class="container header__wrapper flex">
+            <a href="/" class="header__logo">
+              <img src="img/logo.png" alt="logo" class="header-logo__img">
+            </a>
+            <nav class="header__nav">
+              <ul class="nav__list list-reset flex">
+                <li class="list__item">
+                  <a href="/catalog" class="nav__link">Каталог</a>
+                </li>
+                <li class="list__item">
+                  <a href="/cart" class="nav__link">Корзина</a>
+                </li>
+                <li class="list__item">
+                    <form action="/search" class="header__form" method="get">
+                        <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                        <button class="search__btn" onclick="clearInput()">Clear</button>
+                      </form>
+                </li>
+      
+                <% if (!userUsername) { %>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Зарегистрироваться</a>
+                  </li>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Войти</a>
+                  </li>
+              <% } else { %>
+                  <% if (userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/admin" class="nav__link">Админ-Панель</a>
+                      </li>
+                  <% } %>
+                  <% if (userPriority === 1 || userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/logout" class="nav__link">Выйти</a>
+                      </li>
+                  <% } %>
+              <% } %>
+              
+              </ul>
+            </nav>
+          </div>
+      </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.id %></td>
+                        <td><%= user.username %></td>
+                        <td>
+                            <% if (user.priority === 1) { %>
+                                <span style="color: #007bff;">Пользователь</span>
+                            <% } else if (user.priority === 2) { %>
+                                <span style="color: #28a745;">Администратор</span>
+                            <% } else { %>
+                                <span style="color: #dc3545;">Неопределенный</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (user.priority === 1) { %>
+                                <form action="/admin/users/switchPriority/<%= user.id %>" method="POST">
+                                    <button class="admin-button" type="submit">Сделать Администратором</button>
+                                </form>
+                            <% } else if (user.priority === 2) { %>
+                                <form action="/admin/users/switchPriority/<%= user.id %>" method="POST">
+                                    <button class="user-button" type="submit">Сделать Пользователем</button>
+                                </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        <div class="container">
+          <div class="footer__content flex">
+            <h3 class="footer__title">SpaceCream</h3>
+            <p class="footer__text-email">spacecream@gmail.com</p>
+          </div>
+        </div>
+      </footer>
+</body>
+</html>

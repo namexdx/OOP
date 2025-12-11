@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpaceCream</title>
+  <link rel="shortcut icon" href="img/img1.png" type="crimea">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+</head>
+
+<body>
+  <header class="header__main"> 
+    <div class="container header__wrapper flex">
+      <a href="/" class="header__logo">
+        <img src="img/logo.png" alt="logo" class="header-logo__img">
+      </a>
+      <nav class="header__nav">
+        <ul class="nav__list list-reset flex">
+          <li class="list__item">
+            <a href="/catalog" class="nav__link">Каталог</a>
+          </li>
+          <li class="list__item">
+            <a href="/cart" class="nav__link">Корзина</a>
+          </li>
+          <li class="list__item">
+            <form action="/search" class="header__form" method="get">
+              <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+              <button type="submit"><i class="fa fa-search"></i></button>
+              <button class="search__btn" onclick="clearInput()">Clear</button>
+            </form>
+          </li>
+
+          <% if (!userUsername) { %>
+            <li class="list__item">
+                <a href="/register" class="nav__link">Зарегистрироваться</a>
+            </li>
+            <% if (!locals.isAuthenticated) { %>
+              <a href="/login">Войти</a>
+          <% } else { %>
+              <p>Добро пожаловать, <%= locals.username %>!</p>
+          <% } %>
+        <% } else { %>
+          <% if (userPriority === 2) { %>
+            <li class="list__item">
+              <a href="/admin" class="nav__link">Админ-Панель</a>
+            </li>
+            <% } %>
+            <% if (userPriority >= 1) { %>
+                <li class="list__item">
+                    <a href="/logout" class="nav__link">Выйти</a>
+                </li>
+            <% } %>
+        <% } %>
+        
+        </ul>
+      </nav>
+    </div>
+      
+    <section class="content">
+      <div class="container content__wrapper flex">
+        <div class="content__wrapper-text">
+          <h1 class="content__title">Space<br>Cream</h1>
+          <p class="content__text">Погрузись в невероятный мир, где мороженое становится космическим приключением в каждом кусочке!</p>
+          <a href="/catalog">
+            <button class="content__btn btn">Каталог</button>
+          </a>
+        </div>
+        <div class="content__wrapper-img">
+          <img src="img/img1.png" alt="Cream">
+        </div>
+
+      </div>
+    </section>
+  </header>
+  <main>
+    <section class="about">
+      <div class="container about-container flex">
+        <h2 class="about__title">О нас</h2>
+        <div class="about-wrapper flex">
+          <div class="about__content-wrapper">
+            <h3 class="about-content__title">SpaceCream</h3>
+            <p class="about-content__text">Откройте волшебный мир нашего магазина! У нас вы найдете мороженое, которое подарит вам незабываемые вкусовые приключения.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="new">
+      <div class="container">
+        <h2 class="new__title">Новинки</h2>
+      </div>
+        
+      <div class="container-right">
+        <div class="slider">
+          <div class="owl-carousel owl-theme">
+            
+              <% products.forEach(product => { %>
+                <div class="slider__item slide">
+                  <h3 class="slide__title"><%= product.name %></h3>
+                  <% if (product.image_url) { %>
+                    <img class="slide__img" src="<%= product.image_url %>" alt="<%= product.name %>" />
+                  <% } %>
+                  <div class="slide__price-btn-wrapper flex ">
+                    <p class="slide__price"><%= product.price %>р.</p>
+                    <form action="/cart" method="POST">
+                      <input type="hidden" name="product_id" value="<%= product.id %>">
+                      <input type="number" name="quantity" value="1" min="1" style="display: none;">
+                      <button type="submit" class="slide__btn btn">Добавить в корзину</button>
+                    </form>
+                  </div>
+                </div>
+              <% }); %>
+          </div>
+          <a href="/catalog" class="new__link-catalog flex">Перейти в Каталог</a>
+        </div>
+      </div>
+    </section>
+    <section class="contact-us flex">
+      <div class="contact-us__wrapper flex">
+        <div class="contact-us__content flex">
+          <h3 class="contact-us__title">Возникли сложности с заказом?</h3>
+          <p class="contact-us__description">Вы можете отправить нам сообщение и наши специалисты ответят на все интересующие вас вопросы</p>
+          <p class="contact-us__description"><b>Заполните форму данными</b></p>
+          <p class="contact-us__description"><span class="contact-us__description-span">Мы на других платформах</span></p>
+          <ul class="contact-us__social social-list list-reset flex">
+            <li class="social-list__item">
+              <a href="https://t.me/SpaceCream82" class="social-list__link" target="_blank">
+                <img src="img/tg.png" alt="Telegram" class="social-list__icon">
+              </a>
+            </li>
+            <li class="social-list__item">
+              <a href="https://vk.com/club228169798" class="social-list__link" target="_blank">
+                <img src="img/vk.png" alt="Vkontakte" class="social-list__icon">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="contact-us__form-wrapper">
+          <form class="contact-form">
+            <div class="contact-form__row">
+              <input type="text" placeholder="имя" class="contact-form__input" />
+              <input type="text" placeholder="телефон" class="contact-form__input" />
+            </div>
+            <input type="email" placeholder="эл. почта" class="contact-form__input-email" />
+            <textarea placeholder="комментарий" class="contact-form__textarea"></textarea>
+            <button type="submit" class="contact-form__button">Отправить форму</button>
+          </form>
+        </div>
+      </div>
+    </section>    
+  </main>
+  <footer class="footer flex">
+    <div class="container">
+      <div class="footer__content flex">
+        <h3 class="footer__title">SpaceCream</h3>
+        <p class="footer__text-email">spacecream@gmail.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

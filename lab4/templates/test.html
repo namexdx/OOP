@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стеклянная кнопка</title>
+    <style>
+        body {
+            background: rgba(190, 115, 115, 0.5); 
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .button {
+            background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый */
+            border: none;
+            border-radius: 10px;
+            padding: 20px 30px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(15px); /* Эффект размытия */
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2); /* Внутренняя тень */
+        }
+
+        .button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 10px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5); /* Внутренняя тень */
+            z-index: 0; /* Размещаем под кнопкой */
+        }
+    </style>
+</head>
+<body>
+    <button class="button">Нажми меня</button>
+</body>
+</html>

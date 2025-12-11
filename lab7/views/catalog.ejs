@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог</title>
+  <link rel="shortcut icon" href="img/img1.png" type="crimea">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+
+  <style>
+
+    section{
+      margin-bottom: 100px;
+    }
+
+
+  </style>
+</head>
+
+
+<body class="body_catalog">
+  <header class="header_catalog"> 
+    <div class="container header__wrapper flex">
+        <a href="/" class="header__logo">
+          <img src="img/logo.png" alt="logo" class="header-logo__img">
+        </a>
+        <nav class="header__nav">
+          <ul class="nav__list list-reset flex">
+            <li class="list__item">
+              <a href="/catalog" class="nav__link">Каталог</a>
+            </li>
+            <li class="list__item">
+              <a href="/cart" class="nav__link">Корзина</a>
+            </li>
+            <li class="list__item">
+
+           
+              <form action="/search" class="header__form" method="get">
+                <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                <button type="submit"><i class="fa fa-search"></i></button>
+                <!-- <button class="search__btn" onclick="clearInput()">Clear</button> -->
+              </form>
+            </li>
+  
+            <% if (!userUsername) { %>
+              <li class="list__item">
+                  <a href="/login" class="nav__link">Зарегистрироваться</a>
+              </li>
+              <li class="list__item">
+                  <a href="/login" class="nav__link">Войти</a>
+              </li>
+          <% } else { %>
+              <% if (userPriority === 2) { %>
+                  <li class="list__item">
+                      <a href="/admin" class="nav__link">Админ-Панель</a>
+                  </li>
+              <% } %>
+              <% if (userPriority === 1 || userPriority === 2) { %>
+                  <li class="list__item">
+                      <a href="/logout" class="nav__link">Выйти</a>
+                  </li>
+              <% } %>
+          <% } %>
+          
+          </ul>
+        </nav>
+      </div>
+  </header>
+
+  <main class="main__catalog flex">
+    <nav class="catalog__nav">
+        <h4 class="nav__title-categories">Категории</h4>
+        <ul class="catalog__categories list-reset">
+            <li class="categories__item">
+                <% if (userPriority === 2) { %>
+                    <a id="editing-products" href="/admin/products">Добавить/Удалить</a>
+                <% } %>
+            </li>
+            <li class="categories__item">
+                <a href="">Новинки</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Ванночка</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Стаканчик</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Фруктовый лёд</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Ведра</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Рожки</a>
+            </li>
+            <li class="categories__item">
+                <a href="">Эскимо</a>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="/">
+      <div class="product-grid">
+        
+        <% products.forEach(product => { %>
+        <div class="product-slide">
+            <h3 class="product-slide__title"><%= product.name %></h3>
+            <% if (product.image_url) { %>
+                <img class="product-slide__img" src="<%= product.image_url %>" alt="<%= product.name %>" />
+            <% } %>
+            <div class="product-slide__info">
+                <p class="product-slide__price"><%= product.price %></p>
+                <form action="/cart" method="POST">
+                    <input type="hidden" name="product_id" value="<%= product.id %>">
+                    <input type="number" name="quantity" value="1" min="1" style="display: none;">
+                    <button type="submit" class="slide__btn btn" >Добавить в корзину</button>
+                </form>
+            </div>
+        </div>
+        <% }); %>
+      </div>
+    </section>    
+</main>
+
+
+  <!-- <footer class="footer flex">
+    <div class="container">
+      <div class="footer__content flex">
+        <h3 class="footer__title">SpaceCream</h3>
+        <p class="footer__text-email">spacecream@gmail.com</p>
+      </div>
+    </div>
+  </footer> -->
+</body>
+</html>

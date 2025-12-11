@@ -1,0 +1,267 @@
+<!-- views/cart.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceCream - Мороженое из Космоса</title>
+    <link rel="shortcut icon" href="img/img1.png" type="crimea">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <style>
+
+        .cart__container {
+            color: black;
+            max-width: 800px;
+            /* width: 80%; */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        textarea,
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #a84caf;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .button:hover {
+        background-color: #840f86;
+    }
+
+    .cart__products img {
+        width: 200px; 
+        height: auto;
+        margin-right: 15px; /* Отступ между изображением и текстом */
+    }
+
+
+    .cart__container {
+    background-color: rgba(0, 0, 0, 0);
+    padding: 20px;
+}
+
+.cart__products {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart__item {
+    display: flex;
+    align-items: center;
+    background-color: #444444a7; /* Цвет фона для каждого элемента */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    color: white; /* Цвет текста */
+}
+
+.cart__item-image {
+    width: 100px; /* Ширина изображения */
+    height: 100px; /* Высота изображения */
+    border-radius: 8px;
+    margin-right: 15px; /* Отступ между изображением и текстом */
+}
+
+.cart__item-details {
+    flex-grow: 1; /* Позволяет занять оставшееся пространство */
+}
+
+.cart__remove-button {
+    background-color: #930000; /* Красный цвет для кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.cart__remove-button:hover {
+    background-color: #640202; /* Более темный красный при наведении */
+}
+
+.button {
+    background-color: #6600B6; /* Цвет кнопки оформления заказа */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #27ae60; /* Более темный зеленый при наведении */
+}
+
+.cart__summary {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center; /* Центрируем текст */
+    color: white; /* Цвет текста */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.cart__total {
+    font-size: 1.5em; /* Увеличенный размер шрифта для суммы заказа */
+    margin-bottom: 15px; /* Отступ снизу для разделения с кнопкой */
+}
+
+.button {
+    background-color: #6600B6; /* Фиолетовый цвет кнопки */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 80px;
+}
+
+.button--purple {
+    background-color: #6600B6; /* Более светлый фиолетовый для кнопки */
+}
+
+.button:hover {
+    background-color: #732d91; /* Темный фиолетовый при наведении */
+}
+
+footer {
+            background-color: #6600B6;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="body_catalog">
+
+    <header class="header_catalog"> 
+        <div class="container header__wrapper flex">
+            <a href="/" class="header__logo">
+              <img src="img/logo.png" alt="logo" class="header-logo__img">
+            </a>
+            <nav class="header__nav">
+              <ul class="nav__list list-reset flex">
+                <li class="list__item">
+                  <a href="/catalog" class="nav__link">Каталог</a>
+                </li>
+                <li class="list__item">
+                  <a href="/cart" class="nav__link">Корзина</a>
+                </li>
+                <li class="list__item">
+                    <form action="/search" class="header__form" method="get">
+                        <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                        <button class="search__btn" onclick="clearInput()">Clear</button>
+                      </form>
+                </li>
+      
+                <% if (!userUsername) { %>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Зарегистрироваться</a>
+                  </li>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Войти</a>
+                  </li>
+              <% } else { %>
+                  <% if (userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/admin" class="nav__link">Админ-Панель</a>
+                      </li>
+                  <% } %>
+                  <% if (userPriority === 1 || userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/logout" class="nav__link">Выйти</a>
+                      </li>
+                  <% } %>
+              <% } %>
+              
+              </ul>
+            </nav>
+          </div>
+      </header>
+
+      <div class="cart__container">
+        <div class="cart__products">
+            <h1 style="color: #fff">Корзина</h1>
+            <% if (cart.length > 0) { %>
+                <% cart.forEach(item => { %>
+                    <div class="cart__item">
+                        <% if (item.image_url) { %>
+                            <img src="<%= item.image_url %>" alt="<%= item.name %>" class="cart__item-image" />
+                        <% } %>
+                        <div class="cart__item-details">
+                            <h2><%= item.name %></h2>
+                            <p>Цена: <%= item.price %> руб.</p>
+                            <p>Количество: <%= item.quantity %></p>
+                            <p>Итого: <%= item.price * item.quantity %> руб.</p>
+                            <form action="/cart/remove" method="post">
+                                <input type="hidden" name="product_id" value="<%= item.id %>">
+                                <button type="submit" class="cart__remove-button">Убрать из корзины</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p style="color: #fff;">Ваша корзина пуста.</p>
+            <% } %>
+        </div>
+        <div class="cart__summary">
+            <% if (cart.length > 0) { %>
+                <p class="cart__total">Сумма заказа: <%= totalCartPrice %> руб.</p>
+                <% if (isAuthenticated) { %>
+                    <a href="/order" class="button button--purple">Оформить заказ</a>
+                <% } else { %>
+                    <p>Пожалуйста, <a href="/login">войдите</a>, чтобы оформить заказ.</p>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+          <div class="footer__content flex">
+            <h3 class="footer__title">SpaceCream</h3>
+            <p class="footer__text-email">spacecream@gmail.com</p>
+          </div>
+        </div>
+      </footer>
+    </body>
+</html>

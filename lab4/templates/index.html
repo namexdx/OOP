@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass Chat 💬</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    body {
+      background: url("https://static.vecteezy.com/system/resources/thumbnails/049/855/471/small/nature-background-high-resolution-wallpaper-for-a-serene-and-stunning-view-free-photo.jpg") no-repeat center center/cover;
+      backdrop-filter: blur(10px);
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glass-container {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 420px;
+      max-width: 90vw;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .chat-header {
+      text-align: center;
+      font-weight: 600;
+      padding: 15px;
+      font-size: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 15px;
+    }
+
+    .msg {
+      padding: 8px 14px;
+      border-radius: 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s;
+    }
+
+    .mine {
+      align-self: flex-end;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .other {
+      align-self: flex-start;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    #input-container {
+      display: flex;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    #message-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      font-size: 14px;
+      padding: 10px;
+    }
+    #message-input::placeholder{
+      color: white;
+    }
+
+    #send-btn {
+      border: none;
+      background: linear-gradient(45deg, #ff4d4d, #ff9966);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    #send-btn:hover {
+      opacity: 0.8;
+    }
+
+    /* Экран имени */
+    #name-screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    #name-input {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      margin-bottom: 15px;
+      width: 70%;
+      text-align: center;
+    }
+
+    #join-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #join-btn:hover {
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="glass-container">
+    <div class="chat-header">💬 Glass Chat</div>
+    <div class="test">
+      <a href="/test">test</a>
+    </div>
+    <div id="messages"></div>
+
+    <div id="input-container">
+      <input type="text" id="message-input" placeholder="Введите сообщение..." />
+      <button id="send-btn">➤</button>
+    </div>
+  </div>
+
+  <div id="name-screen">
+    <input id="name-input" type="text" placeholder="Введите ваше имя..." />
+    <button id="join-btn">Войти в чат</button>
+  </div>
+
+  <script>
+    const socket = io();
+    const msgBox = document.getElementById("messages");
+    const input = document.getElementById("message-input");
+    const sendBtn = document.getElementById("send-btn");
+    const nameScreen = document.getElementById("name-screen");
+    const nameInput = document.getElementById("name-input");
+    const joinBtn = document.getElementById("join-btn");
+    let username = null;
+
+    
+socket.on("message", (data) => {
+  const div = document.createElement("div");
+  // Доступ к полям объекта
+  const { name, text } = data;  
+  div.classList.add("msg");
+
+  if (name === username) {
+    div.classList.add("mine");
+  } else {
+    div.classList.add("other");
+  }
+  
+  div.textContent = `${name}: ${text}`;  // Установите текст сообщения
+  msgBox.appendChild(div);
+  msgBox.scrollTop = msgBox.scrollHeight;  // Прокрутка вниз
+});
+
+    
+    joinBtn.addEventListener("click", () => {
+    const name = nameInput.value.trim();
+    if (!name) return alert("Введите имя!");
+    username = name;
+    nameScreen.style.display = "none";
+});
+
+// Emit a structured object on message send
+sendBtn.addEventListener("click", sendMessage);
+input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendMessage();
+});
+
+function sendMessage() {
+    const text = input.value.trim();
+    if (!text || !username) return;
+    const message = { name: username, text };  // Send structured object
+    socket.emit("message", message);  // Emit as a structured message
+    input.value = "";  // Clear input field
+}
+
+  </script>
+</body>
+</html>

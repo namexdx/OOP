@@ -1,0 +1,29 @@
+image: node:18
+
+stages:
+  - install
+  - test
+  - deploy
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+
+run_tests:
+  stage: test
+  script:
+    - npm test
+
+deploy:
+  stage: deploy
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+  script:
+    - echo "Deploying the application..."
+    - ssh -i ~/.ssh/id_rsa devops@$SERVER_IP "cd testfolder/univibe && git pull https://gitlab-ci-token:${GITLAB_TOKEN}@gitlab.com/name_xd/univibe.git && npm install && nohup npm start > output.log 2>&1 &"
+  only:
+    - main

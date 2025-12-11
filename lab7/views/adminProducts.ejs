@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Products</title>
+    <link rel="shortcut icon" href="img/img1.png" type="crimea">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .product-tile input[type="text"], textarea, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .product-tile button {
+            padding: 10px 20px;
+            background-color: #6600B6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product-tile button:hover {
+            background-color: #8205fe92;
+        }
+
+        .back-btn {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            color: #45a049;
+        }
+
+        .product-form {
+            color: #ffffff;
+            background-color: #8205fe92;
+            padding: 20px;
+            max-width: 300px;
+            margin: 0 100px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Начинаем слева */
+        margin: 0 100px auto;
+
+    }
+
+    .product-tile {
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #8205fe92;
+        /* width: 300px; */
+        width: calc(16.66% - 20px); 
+        box-sizing: border-box; /* Учитываем отступы в ширине */
+    }
+
+    #uploadButton {
+    background: #6600B6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#uploadButton:hover {
+        background: #490082;
+        transform: scale(1.05);
+    }
+
+    #uploadButton:active {
+        transform: scale(0.95);
+    }
+
+
+
+input[type="file"] {
+    display: none; /* Скрываем стандартный input */
+}
+
+.file-upload {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #6600B6;
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.custom-file-upload:hover {
+    background: #3d006c;
+    transform: scale(1.05);
+}
+
+input{
+    outline: none;
+}
+
+    </style>
+</head>
+<body class="body_catalog">
+
+    <header class="header_catalog"> 
+        <div class="container header__wrapper flex">
+            <a href="/" class="header__logo">
+              <img src="img/logo.png" alt="logo" class="header-logo__img">
+            </a>
+            <nav class="header__nav">
+              <ul class="nav__list list-reset flex">
+                <li class="list__item">
+                  <a href="/catalog" class="nav__link">Каталог</a>
+                </li>
+                <li class="list__item">
+                  <a href="/cart" class="nav__link">Корзина</a>
+                </li>
+                <li class="list__item">
+                    <form action="/search" class="header__form" method="get">
+                        <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                      </form>
+                </li>
+      
+                <% if (!userUsername) { %>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Зарегистрироваться</a>
+                  </li>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Войти</a>
+                  </li>
+              <% } else { %>
+                  <% if (userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/admin" class="nav__link">Админ-Панель</a>
+                      </li>
+                  <% } %>
+                  <% if (userPriority === 1 || userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/logout" class="nav__link">Выйти</a>
+                      </li>
+                  <% } %>
+              <% } %>
+              
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="product-form">
+              <h2>Добавить новый товар:</h2>
+              <form action="/add" method="POST" enctype="multipart/form-data">
+                <label for="name">Название:</label>
+                <input type="text" name="name" required placeholder="Название">
+                <label for="price">Цена:</label>
+                <input type="text" name="description" required value="описание" style="display: none;">
+                <input type="number" name="price" required placeholder="Цена">
+                <br>
+                <label>Изображение:</label>
+                <div class="file-upload">
+                    <input type="file" name="image" id="file" required>
+                    <label for="file" class="custom-file-upload">
+                        Выбрать файл
+                    </label>
+                </div>
+                <span id="fileName" class="file-name">Файл не выбран</span>
+                <br>
+                
+                <button type="submit" id="uploadButton"><i class="fas fa-upload"></i> Загрузить</button>
+            </form>
+          </div>
+          
+
+          <div class="product-container">
+            <% products.forEach(product => { %>
+                <div class="product-tile">
+                    
+                    <form action="/admin/products/update/<%= product.id %>" method="POST" enctype="multipart/form-data">
+                        <input type="text" name="name" value="<%= product.name %>" required placeholder="Название">
+                        <input type="text" name="description" value="<%= product.description %>" required placeholder="Описание" style="display: none;">
+                        <input type="number" name="price" value="<%= product.price %>" required placeholder="Цена">
+                        <br>
+                        <div class="file-upload">
+                            <input type="file" name="image" id="file"> <!-- Измените здесь на 'image' -->
+                            <label for="file" class="custom-file-upload">
+                                Выбрать файл
+                            </label>
+                        </div>
+                        <span id="fileName" class="file-name">Файл не выбран</span>
+                        <br>
+                        
+                        <button type="submit"><i class="fas fa-upload"></i> Обновить</button>
+                    </form>
+                    <form action="/admin/products/delete/<%= product.id %>" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <br>
+                        <button type="submit">Удалить</button>
+                    </form>
+                </div>
+            <% }); %>
+        </div>
+
+          
+      </header>
+
+<script>
+            document.getElementById('file').addEventListener('change', function(event) {
+            const fileName = event.target.files[0] ? event.target.files[0].name : 'Файл не выбран';
+            document.getElementById('fileName').innerText = fileName;
+        });
+</script>
+
+</body>
+</html>

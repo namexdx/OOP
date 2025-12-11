@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Orders</title>
+    <link rel="shortcut icon" href="img/img1.png" type="crimea">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <style>
+
+        section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        section li {
+            max-width: 800px;
+            margin: auto;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #ffffff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        section li:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-info {
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            color: #45a049;
+        }
+
+        footer {
+            background-color: #6600B6;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            /* position: fixed; */
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="body_catalog">
+   <header class="header_catalog"> 
+        <div class="container header__wrapper flex">
+            <a href="/" class="header__logo">
+              <img src="img/logo.png" alt="logo" class="header-logo__img">
+            </a>
+            <nav class="header__nav">
+              <ul class="nav__list list-reset flex">
+                <li class="list__item">
+                  <a href="/catalog" class="nav__link">Каталог</a>
+                </li>
+                <li class="list__item">
+                  <a href="/cart" class="nav__link">Корзина</a>
+                </li>
+                <li class="list__item">
+                    <form action="/search" class="header__form" method="get">
+                        <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                        <button class="search__btn" onclick="clearInput()">Clear</button>
+                      </form>
+                </li>
+      
+                <% if (!userUsername) { %>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Зарегистрироваться</a>
+                  </li>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Войти</a>
+                  </li>
+              <% } else { %>
+                  <% if (userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/admin" class="nav__link">Админ-Панель</a>
+                      </li>
+                  <% } %>
+                  <% if (userPriority === 1 || userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/logout" class="nav__link">Выйти</a>
+                      </li>
+                  <% } %>
+              <% } %>
+              
+              </ul>
+            </nav>
+          </div>
+      </header>
+      
+
+    <section>
+
+        <ul>
+            <% orders.forEach(order => { %>
+                <li>
+                    <div class="order-info">
+                        <strong>Order ID:</strong> <%= order.id %><br>
+                        <strong>User ID:</strong> <%= order.user_id %><br>
+                        <strong>Order Date:</strong> <%= order.order_date %><br>
+                        <strong>Name:</strong> <%= order.name %><br>
+                        <strong>Address:</strong> <%= order.address %><br>
+                    </div>
+                    <h2>Order Items</h2>
+                    <% if (order.items && order.items.length > 0) { %>
+                        <ul class="order-items">
+                            <% order.items.forEach(item => { %>
+                                <li>
+                                    <strong>Product Name:</strong> <%= item.name %><br>
+                                    <strong>Quantity:</strong> <%= item.quantity %><br>
+                                    <strong>Price per Unit:</strong> $<%= item.price %>
+                                </li>
+                                <% }); %>
+                            </ul>
+                            <% } else { %>
+                                <p>No items found for this order.</p>
+                                <% } %>
+                            </li>
+                            <% }); %>
+                        </ul>
+                    </section>
+
+                    <footer>
+                        <div class="container">
+                          <div class="footer__content flex">
+                            <h3 class="footer__title">SpaceCream</h3>
+                            <p class="footer__text-email">spacecream@gmail.com</p>
+                          </div>
+                        </div>
+                      </footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Grandstander:ital,wght@0,100..900;1,100..900&display=swap');
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+img {
+  max-width: 100%;
+}
+
+body {
+  min-width: 320px;
+  color: white;
+  font-family: 'Grandstander', cursive;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.container-right {
+	overflow-x: hidden;
+	padding-left: calc((100% - 1750px) / 2 + 15px);
+}
+
+.list-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.btn {
+  padding: 0;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'Grandstander', cursive;
+}
+
+.flex {
+  display: flex;
+}

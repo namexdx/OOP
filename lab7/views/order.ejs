@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <link rel="shortcut icon" href="img/img1.png" type="crimea">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <style>  
+        .order-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: rgb(255, 255, 255);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            outline: none;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: transparent;
+            color: #fff;
+        }
+
+        input[type="text"]:focus {
+            outline: none; /* Убираем стандартный контур */
+            border-color: #007bff; /* Цвет границы при фокусе */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #6600B6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        p {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #6600B6;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="body_catalog">
+    <header class="header_catalog"> 
+        <div class="container header__wrapper flex">
+            <a href="/" class="header__logo">
+              <img src="img/logo.png" alt="logo" class="header-logo__img">
+            </a>
+            <nav class="header__nav">
+              <ul class="nav__list list-reset flex">
+                <li class="list__item">
+                  <a href="/catalog" class="nav__link">Каталог</a>
+                </li>
+                <li class="list__item">
+                  <a href="/cart" class="nav__link">Корзина</a>
+                </li>
+                <li class="list__item">
+                  <form action="/search" class="header__form" method="get">
+                    <input type="search" name="q" placeholder="Поиск продуктов" required class="header__input">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                    <button class="search__btn" onclick="clearInput()">Clear</button>
+                  </form>
+                </li>
+      
+                <% if (!userUsername) { %>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Зарегистрироваться</a>
+                  </li>
+                  <li class="list__item">
+                      <a href="/login" class="nav__link">Войти</a>
+                  </li>
+              <% } else { %>
+                  <% if (userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/admin" class="nav__link">Админ-Панель</a>
+                      </li>
+                  <% } %>
+                  <% if (userPriority === 1 || userPriority === 2) { %>
+                      <li class="list__item">
+                          <a href="/logout" class="nav__link">Выйти</a>
+                      </li>
+                  <% } %>
+              <% } %>
+              
+              </ul>
+            </nav>
+          </div>
+      </header>
+
+    <div class="order-container">
+        <h1>Оформление заказа</h1>
+        <form method="post" action="/order">
+            <label for="name">Ваше имя:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="address">Адрес доставки:</label>
+            <input type="text" id="address" name="address" required><br>
+            <button type="submit">Оформить заказ</button>
+        </form>
+        <p><a href="/cart">Вернуться в корзину</a></p>
+    </div>
+
+    <footer>
+        <div class="container">
+          <div class="footer__content flex">
+            <h3 class="footer__title">SpaceCream</h3>
+            <p class="footer__text-email">spacecream@gmail.com</p>
+          </div>
+        </div>
+      </footer>
+</body>
+</html>
